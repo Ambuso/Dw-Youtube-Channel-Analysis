@@ -4,23 +4,7 @@ A daily data pipeline that pulls video statistics for a YouTube channel, cleans 
 
 ## Architecture
 
-```mermaid
-flowchart LR
-    API["YouTube Data API v3"]
-    DB[("PostgreSQL<br/>dataengineering.youtube_videos_enriched")]
-    G["Grafana dashboards"]
-
-    subgraph Airflow["Airflow DAG: youtube_data_pipeline, runs daily"]
-        E["extract.py<br/>fetch every video and its stats"]
-        J[("JSON file")]
-        T["transform.py<br/>PySpark: clean, enrich, classify"]
-        E --> J --> T
-    end
-
-    API --> E
-    T -->|JDBC append| DB
-    DB --> G
-```
+![Architecture: YouTube Data API to extract.py to JSON to PySpark transform to PostgreSQL to Grafana, orchestrated daily by Airflow](docs/architecture.png)
 
 ## How it works
 
